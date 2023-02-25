@@ -2,8 +2,7 @@ package com.project.questapp.entities;
 
 import java.util.List;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -26,8 +25,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "posts")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Table(name = "posts")
 public class Post {
 
 	@Id
@@ -35,17 +34,19 @@ public class Post {
 	@Column(name = "id")
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId", nullable=false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore
-	private User user;
+	
 	
 	@Column(name="text")
 	private String text;
 	
 	@Column(name="title")
 	private String title;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userId", nullable=false)
+	//@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private User user;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "post")
