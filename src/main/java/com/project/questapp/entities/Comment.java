@@ -1,5 +1,4 @@
 package com.project.questapp.entities;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
