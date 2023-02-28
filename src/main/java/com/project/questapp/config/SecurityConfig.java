@@ -79,9 +79,11 @@ public class SecurityConfig {
 		.authorizeHttpRequests()
 		.requestMatchers(HttpMethod.GET, "/comments")
 		.permitAll()
-		.requestMatchers("/auth/**")
-		.permitAll()
 		.requestMatchers(HttpMethod.GET, "/posts")
+		.permitAll()
+		.requestMatchers(HttpMethod.POST, "/auth/login")
+		.permitAll()
+		.requestMatchers("/auth/register")
 		.permitAll()
 		.anyRequest().authenticated();
     		
