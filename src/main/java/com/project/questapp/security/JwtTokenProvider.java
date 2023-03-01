@@ -33,6 +33,13 @@ public class JwtTokenProvider {
 				.signWith(SignatureAlgorithm.HS512, APP_SECRET).compact();
 	}
 	
+	public String generateJwtTokenByUserId(Integer userId) {
+		Date expireDate = new Date(new Date().getTime() + EXPIRES_IN);
+		return Jwts.builder().setSubject(Integer.toString(userId))
+				.setIssuedAt(new Date()).setExpiration(expireDate)
+				.signWith(SignatureAlgorithm.HS512, APP_SECRET).compact();
+	}
+	
 	int getUserIdFromJwt(String token) {
 		Claims claims = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(token).getBody();
 		return Integer.parseInt(claims.getSubject());

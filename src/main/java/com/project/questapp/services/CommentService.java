@@ -3,6 +3,7 @@ package com.project.questapp.services;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import com.project.questapp.entities.Post;
 import com.project.questapp.repository.CommentRepository;
 import com.project.questapp.requests.CommentCreateRequest;
 import com.project.questapp.requests.CommentUpdateRequest;
+import com.project.questapp.responses.CommentResponse;
 
 @Service
 public class CommentService {
@@ -27,16 +29,18 @@ public class CommentService {
 		this.postService = postService;
 	}
 
-	public List<Comment> getAllCommentsWithParam(Optional<Integer> userId, Optional<Integer> postId) {
+	public List<CommentResponse> getAllCommentsWithParam(Optional<Integer> userId, Optional<Integer> postId) {
+		List<Comment> comments;
 		if(userId.isPresent() && postId.isPresent()) {
-			return commentRepository.findByUserIdAndPostId(userId.get(), postId.get());
+			comments = commentRepository.findByUserIdAndPostId(userId.get(), postId.get());
 		}else if(userId.isPresent()) {
-			return commentRepository.findByUserId(userId.get());
+			comments = commentRepository.findByUserId(userId.get());
 		}else if(postId.isPresent()) {
-			return commentRepository.findByPostId(postId.get());
+			comments = commentRepository.findByPostId(postId.get());
 		}else {
-			return commentRepository.findAll();
+			comments = commentRepository.findAll();
 		}
+		return comments.stream().map(comment -> new CommentResponse(comment)).collect(Collectors.toList());
 		
 	}
 

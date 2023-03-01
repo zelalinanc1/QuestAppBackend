@@ -80,8 +80,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET,"/posts")
                 .permitAll()
-                .requestMatchers(HttpMethod.GET,"/posts/**")
-                .permitAll()
                 .requestMatchers(HttpMethod.GET,"/comments")
                 .permitAll()
                 .requestMatchers("/auth/**")
