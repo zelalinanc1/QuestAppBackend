@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 
 
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,7 +31,6 @@ public class SecurityConfig {
 	private JwtAuthenticationEntryPoint handler;
 
 	public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtAuthenticationEntryPoint handler) {
-		super();
 		this.userDetailsService = userDetailsService;
 		this.handler = handler;
 	}
@@ -68,29 +68,30 @@ public class SecurityConfig {
         return new CorsFilter(source);
     }
     
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    	httpSecurity
-    	.cors()
-		.and()
-		.csrf().disable()
-		.exceptionHandling().authenticationEntryPoint(handler).and()
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-		.authorizeHttpRequests()
-		.requestMatchers(HttpMethod.GET, "/comments")
-		.permitAll()
-		.requestMatchers(HttpMethod.GET, "/posts")
-		.permitAll()
-		.requestMatchers(HttpMethod.POST, "/auth/login")
-		.permitAll()
-		.requestMatchers("/auth/register")
-		.permitAll()
-		.anyRequest().authenticated();
-    		
-    	httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    	return httpSecurity.build();
-    }
     
+	@Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .cors()
+                .and()
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(handler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET,"/posts")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET,"/posts/**")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET,"/comments")
+                .permitAll()
+                .requestMatchers("/auth/**")
+                .permitAll()
+                .anyRequest().authenticated();
+                
+
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
+    }
     
     
     

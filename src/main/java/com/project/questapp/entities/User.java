@@ -33,6 +33,10 @@ public class User {
 	@Column(name="userName")
 	private String userName;
 	
+
+	@Column(nullable = true)
+	private Integer avatar;
+	
 	
 	@Column(name="password")
 	private String password;

@@ -36,9 +36,14 @@ public class PostController {
 			return postService.getAllPosts(userId);
 		}
 		
+//		@GetMapping("/{postId}")
+//		public Post getOnePost(@PathVariable Integer postId) {
+//			return postService.getOnePostById(postId);
+//		}
+		
 		@GetMapping("/{postId}")
-		public Post getOnePost(@PathVariable Integer postId) {
-			return postService.getOnePostById(postId);
+		public PostResponse getOnePostByIdWithLikes(@PathVariable Integer postId) {
+			return postService.getOnePostByIdWithLikes(postId);
 		}
 		
 		@PostMapping
@@ -56,4 +61,5 @@ public class PostController {
 		public void deleteOnePost(@PathVariable Integer postId) {
 			postService.deleteOnePostById(postId);
 		}
+		
 }

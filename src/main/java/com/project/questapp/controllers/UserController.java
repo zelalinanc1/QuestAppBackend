@@ -2,7 +2,7 @@ package com.project.questapp.controllers;
 
 import java.util.List;
 
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.questapp.entities.User;
+import com.project.questapp.responses.UserResponse;
 import com.project.questapp.services.UserService;
 
 @RestController
@@ -22,7 +23,7 @@ public class UserController {
 	private UserService userService;
 
 	public UserController(UserService userService) {
-		super();
+		
 		this.userService = userService;
 	}
 	
@@ -37,9 +38,9 @@ public class UserController {
 	}
 	
 	@GetMapping("/{userId}")
-	public User getOneUser(@PathVariable int userId) {
+	public UserResponse getOneUser(@PathVariable int userId) {
 		//custom exception
-		return userService.getOneUserById(userId);
+		return new UserResponse(userService.getOneUserById(userId));
 	}
 	
 	@PutMapping("/{userId}")
@@ -54,6 +55,10 @@ public class UserController {
 		userService.deleteById(userId);
 	}
 	
+	@GetMapping("/activity/{userId}")
+	public List<Object> getUserActivity(@PathVariable int userId) {
+		return userService.getUserActivity(userId);
+	}
 	
 	
 }
